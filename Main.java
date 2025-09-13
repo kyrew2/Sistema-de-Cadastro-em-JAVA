@@ -13,7 +13,7 @@ public class Main {
                 1 - Cadastro de Veículo
                 2 - Listar Veículos
                 3 - Excluir Veículo
-                4 - Pesquisar um Veiculo 
+                4 - Pesquisar um Veiculo
                 0 - Sair
                 """;
         int opcao;
@@ -57,9 +57,20 @@ public class Main {
         String placa = Input.scanString("Digite a placa: ", scan);
         int ano = Input.scanInt("Digite o ano: ", scan);
 
-        Veiculo veiculo = new Veiculo(marca, modelo, placa, ano);
-        veiculos.add(veiculo);
-        System.out.println("Veículo cadastrado com sucesso!");
+        boolean placaExistente = false;
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
+                placaExistente = true;
+                break;
+            }
+        }
+        if (placaExistente) {
+            System.out.println("Já existe um veículo cadastrado com essa placa!");
+        } else {
+            Veiculo veiculo = new Veiculo(marca, modelo, placa, ano);
+            veiculos.add(veiculo);
+            System.out.println("Veículo cadastrado com sucesso!");
+        }
     }
 
     static void listaVeiculos() {
@@ -103,7 +114,7 @@ public class Main {
         boolean encontrado = false;
 
         switch (escolhaPesquisa) {
-            case 1 -> {
+            case 1:
                 String placa = Input.scanString("Digite a placa: ", scan);
                 for (Veiculo veiculo : veiculos) {
                     if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
@@ -119,24 +130,22 @@ public class Main {
                 if (!encontrado) {
                     System.out.println("Veículo não encontrado!");
                 }
-            }
-            case 2 -> {
-                String modelo = Input.scanString("Digite o modelo: ", scan);
+
+            case 2:
+                String modelo = Input.scanString("Digite o modelo: ", scan).toLowerCase();
                 for (Veiculo veiculo : veiculos) {
-                    if (veiculo.getModelo().equalsIgnoreCase(modelo)) {
+                    if (veiculo.getModelo().toLowerCase().contains(modelo)) {
                         System.out.println("=== Veículo encontrado ===");
-                        System.out.println("Marca: " + veiculo.getMarca());
-                        System.out.println("Modelo: " + veiculo.getModelo());
-                        System.out.println("Ano: " + veiculo.getAno());
-                        System.out.println("Placa: " + veiculo.getPlaca());
+                        System.out.println(veiculo);
                         encontrado = true;
                     }
                 }
                 if (!encontrado) {
                     System.out.println("Nenhum veículo com esse modelo foi encontrado.");
                 }
-            }
-            default -> System.out.println("Opção inválida!");
+            default:
+                System.out.println("Opção inválida!");
         }
+
     }
 }
